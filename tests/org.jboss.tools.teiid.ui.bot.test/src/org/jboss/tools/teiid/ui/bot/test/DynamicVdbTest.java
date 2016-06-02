@@ -199,7 +199,7 @@ public class DynamicVdbTest {
 				.replace('\n', ' ');
 
 		collector.checkThat("rest options not in ddl", procViewMetadata2,
-				new RegexMatcher(".*OPTIONS \\(.*\"REST:METHOD\" 'GET', \"REST:URI\" 'proc1/\\{p1\\}'\\).*"));
+				new RegexMatcher(".*OPTIONS\\(.*\"REST:URI\" 'test/\\{p1\\}', \"REST:METHOD\" 'GET'\\).*"));
 		collector.checkThat("RETURNS clause not in ddl", procViewMetadata2, new RegexMatcher(".*RETURNS TABLE.*"));
 		collector.checkThat("wrong procedure body", procViewMetadata2, new RegexMatcher(".*XMLELEMENT.*"));
 		collector.checkThat("REST namespace not set in ddl", procViewMetadata2,
