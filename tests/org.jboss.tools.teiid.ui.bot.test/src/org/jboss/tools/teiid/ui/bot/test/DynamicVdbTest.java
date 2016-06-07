@@ -274,7 +274,7 @@ public class DynamicVdbTest {
 				' ');
 		collector.checkThat("Wrong metadata for UDF", metadata,
 				new RegexMatcher(".*CREATE VIRTUAL FUNCTION udfConcatNull "
-						+ "\\(stringLeft string\\(4000\\), stringRight string\\(4000\\)\\) RETURNS string(4000) "
+						+ "\\(stringLeft string\\(4000\\), stringRight string\\(4000\\)\\) RETURNS string\\(4000\\) "
 						+ " OPTIONS\\(\"FUNCTION-CATEGORY\" 'MY_TESTING_FUNCTION_CATEGORY', "
 						+ "JAVA_CLASS 'userdefinedfunctions.MyConcatNull', JAVA_METHOD 'myConcatNull'\\).*"));
 
