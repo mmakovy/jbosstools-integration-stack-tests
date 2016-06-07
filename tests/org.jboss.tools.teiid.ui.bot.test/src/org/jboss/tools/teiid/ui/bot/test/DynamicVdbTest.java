@@ -23,6 +23,7 @@ import org.hamcrest.core.IsNot;
 import org.hamcrest.core.StringContains;
 import org.hamcrest.text.IsEmptyString;
 import org.jboss.reddeer.common.matcher.RegexMatcher;
+import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
@@ -32,8 +33,10 @@ import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.api.TableItem;
+import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.tools.teiid.reddeer.Procedure;
 import org.jboss.tools.teiid.reddeer.VDB;
@@ -265,19 +268,19 @@ public class DynamicVdbTest {
 
 		// create dynamic vdb from static
 		String dynamicVdbContent = createDynamicVdb(PROJECT_NAME, staticVdbName, dynamicVdbName);
-
+		
 		// check ddl
 		String metadata = getXPath(dynamicVdbContent, "vdb/model[@name='ProcedureModel']/metadata[1]").replace('\n',
 				' ');
 		collector.checkThat("Wrong metadata for UDF", metadata,
 				new RegexMatcher(".*CREATE VIRTUAL FUNCTION udfConcatNull "
-						+ "\\(stringLeft string\\(4000\\), stringRight string\\(4000\\)\\) RETURNS string "
-						+ "OPTIONS\\(\"FUNCTION-CATEGORY\" 'MY_TESTING_FUNCTION_CATEGORY', "
+						+ "\\(stringLeft string\\(4000\\), stringRight string\\(4000\\)\\) RETURNS string(4000) "
+						+ " OPTIONS\\(\"FUNCTION-CATEGORY\" 'MY_TESTING_FUNCTION_CATEGORY', "
 						+ "JAVA_CLASS 'userdefinedfunctions.MyConcatNull', JAVA_METHOD 'myConcatNull'\\).*"));
 
 		// check lib property
 		collector.checkThat("UDF lib property not set",
-				getXPath(dynamicVdbContent, "/vdb/property[@name='lib']/@value)"), is("myudfmodule"));
+				getXPath(dynamicVdbContent, "/vdb/property[@name='lib']/@value"), is("MyTestUdf-1.0-SNAPSHOT"));
 
 		// check deployment
 		checkDeployOk(staticVdbName, dynamicVdbName);
@@ -941,6 +944,9 @@ public class DynamicVdbTest {
 		wizard.setName(dynamicVdbName);
 		wizard.next();
 		wizard.generate();
+		if (new ShellWithTextIsAvailable("Generate Dynamic VDB Status\", ").test()){
+			new PushButton("OK").click();
+		}
 		String contents = wizard.getContents();
 		wizard.finish();
 		return contents;
