@@ -120,7 +120,7 @@ public class DynamicVdbTest {
 				BQT_MODEL_NAME);
 
 		// create static vdb
-		createVdb(PROJECT_NAME, staticVdbName, VIEW_MODEL + ".xmi", BQT_MODEL_NAME + ".xmi");
+		createVdb(PROJECT_NAME, staticVdbName, VIEW_MODEL + ".xmi");
 
 		// create dynamic vdb from static
 		String dynamicVdbContent = createDynamicVdb(PROJECT_NAME, staticVdbName, dynamicVdbName);
@@ -139,7 +139,7 @@ public class DynamicVdbTest {
 				is(BQT_MODEL_NAME));
 		collector.checkThat("wrong source translator name",
 				getXPath(dynamicVdbContent, "/vdb/model[@name='postgresql92Model']/source/@translator-name"),
-				is("jdbc-simple"));
+				is("postgresql"));
 		checkMetadata(getXPath(dynamicVdbContent, "/vdb/model[@name='postgresql92Model']/metadata[1]"), sourceTables,
 				CREATE_FOREIGN_TABLE);
 
