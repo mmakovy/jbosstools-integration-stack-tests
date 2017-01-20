@@ -9,14 +9,15 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.eclipse.wst.server.ui.RuntimePreferencePage;
 import org.jboss.reddeer.eclipse.wst.server.ui.editor.ServerEditor;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.runtime.reddeer.Namespaces;
+import org.jboss.tools.runtime.reddeer.Openshift;
 import org.jboss.tools.runtime.reddeer.Remote;
 import org.jboss.tools.runtime.reddeer.ServerBase;
 import org.jboss.tools.runtime.reddeer.condition.JobIsKilled;
@@ -43,6 +44,9 @@ public class ServerAS extends ServerBase {
 
 	@XmlElement(name = "remote", namespace = Namespaces.SOA_REQ)
 	private Remote remote;
+	
+	@XmlElement(name = "openshift", namespace = Namespaces.SOA_REQ)
+	private Openshift openshift;
 
 	@XmlElement(name = "configuration", namespace = Namespaces.SOA_REQ, defaultValue = DEFAULT_CONFIGURATION)
 	private String configuration;
@@ -143,6 +147,10 @@ public class ServerAS extends ServerBase {
 			serverWizard.setName(getName());
 			serverWizard.next();
 			serverWizard.setRuntime(getRuntimeName());
+			if (openshift!=null){
+			serverWizard.setExternallyManaged(openshift.isExternallyManaged());
+			serverWizard.setUseManagementOperations(openshift.isUseManagementOperations());
+			}
 			new WaitUntil(new JobIsKilled("Refreshing server adapter list"), TimePeriod.LONG, false);
 			serverWizard.finish();
 		}

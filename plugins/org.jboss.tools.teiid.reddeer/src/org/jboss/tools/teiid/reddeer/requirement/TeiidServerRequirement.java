@@ -139,6 +139,10 @@ public class TeiidServerRequirement implements Requirement<TeiidServer>, CustomC
 		}
 
 		serverBase.setState(teiid.state());
+		
+		if (new ShellWithTextIsAvailable("Server Credentials Required").test()){
+			new PushButton("OK").click();
+		}
 
 		try {
 			new WaitUntil(new ConsoleHasText("started in"), TimePeriod.LONG);
