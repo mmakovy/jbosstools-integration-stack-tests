@@ -107,6 +107,7 @@ public class CreateModelTest {
 	}
 
 	@Test
+	@Ignore
 	public void webserviceViewModel() {
 		MetadataModelWizard.openWizard()
 				.setLocation(PROJECT_NAME)
