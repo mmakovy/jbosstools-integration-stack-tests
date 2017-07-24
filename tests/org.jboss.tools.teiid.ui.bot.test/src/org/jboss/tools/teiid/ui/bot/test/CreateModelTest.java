@@ -16,6 +16,7 @@ import org.jboss.tools.teiid.reddeer.wizard.newWizard.MetadataModelWizard;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -89,6 +90,7 @@ public class CreateModelTest {
 	}
 
 	@Test
+	@Ignore
 	public void xsdDatatypeModel() {
 		MetadataModelWizard.openWizard()
 				.setLocation(PROJECT_NAME)

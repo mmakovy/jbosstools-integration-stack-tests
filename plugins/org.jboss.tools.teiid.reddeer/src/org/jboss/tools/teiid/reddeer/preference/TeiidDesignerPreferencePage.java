@@ -50,7 +50,7 @@ public class TeiidDesignerPreferencePage extends PreferencePage {
 			new ShellWithTextIsActive("Changing Teiid Instance version").test()) {
 			new PushButton("Yes").click();
 		}
-		new PushButton("OK").click();
+		new PushButton("Apply and Close").click();
 	}
 
 	public void open() {
